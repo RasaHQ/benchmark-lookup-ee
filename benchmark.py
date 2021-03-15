@@ -34,6 +34,10 @@ def time_process(extractor: EntityExtractor, test_data: TrainingData) -> float:
 
 
 def generate_steps(start: int, end: int) -> List[int]:
+    start = max(0, start)
+    if start > end:
+        sys.stderr.write(f'Invalid start value, start {start} > end {end}\n')
+        exit(1)
     current = start
     steps = []
     while current < end:
@@ -77,12 +81,16 @@ def main():
         for lookup in training_data.lookup_tables:
             if lookup['name'] == args.lookup:
                 training_data.lookup_tables = [lookup]
-                break
+        if len(training_data.lookup_tables) > 1:
+            sys.stderr.write(f'No matching lookup was found for {args.lookup}. '
+                             f'Options were: {",".join([lookup["name"] for lookup in training_data.lookup_tables])}\n')
+            exit(1)
     else:
         training_data.lookup_tables = [training_data.lookup_tables[0]]
 
-    if len(training_data.training_examples) < 2:
-        sys.stderr.write(f"You must have at least two nlu examples per entity type.")
+    if (args.lookup not in training_data.number_of_examples_per_entity
+            or training_data.number_of_examples_per_entity[args.lookup] < 2):
+        sys.stderr.write(f'You must have at least two nlu examples for entity type: {args.lookup}.\n')
         exit(1)
 
     extractors = {'FlashTextEntityExtractor': FlashTextEntityExtractor(),
