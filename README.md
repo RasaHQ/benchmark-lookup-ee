@@ -1,6 +1,8 @@
 # benchmark-lookup-ee
 This repository contains code to benchmark lookup table entity extraction.
 
+To install the required packages: `pip install -r requirements.txt`
+
 ## how to run benchmark.py ##
 `benchmark.py` will compare the processing time of `RegexEntityExtractor` and `FlashTextEntityExtractor` for varying numbers
 of lookup patterns. For each extractor, each message in the test file will be processed.
@@ -31,7 +33,13 @@ The output for the default arguments should look something like this:
 ## how to run get_wiki_file.py ##
 `get_wiki_file.py` was used to produce `data/tennis_test.txt`. It grabs the text contents of a Wikipedia file, and 
 outputs them, one sentence per line for test data. You can use it to produce your own messages to process. 
-Alternatively, you can define your own file of messages to process. Each line in the file should be one message.
+Alternatively, you can define your own file of messages to process. Each line in the file should be one message. Of 
+course.
+
+The sentence tokenization is done with the [nltk sentence tokenizer](https://www.nltk.org/api/nltk.tokenize.html#nltk.tokenize.punkt.PunktSentenceTokenizer)
+This is not perfect, but will do. References are stripped, and any sentence shorter than three words, as separated by 
+whitespace is discarded. The nltk sentence tokenizer only supports some languages. Please check the output of the script
+to see if the sentences have been tokenized mostly correctly.
 
 ### arguments: ###
 - `--title` is the (case-sensitive!) title of the page you want to grab (default: "History of tennis")
