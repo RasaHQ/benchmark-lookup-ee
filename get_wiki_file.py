@@ -36,6 +36,6 @@ with open(args.out, "w") as out_file:
     for paragraph in paragraphs:
         sentences = nltk.sent_tokenize(paragraph.text_content())
         for sentence in sentences:
-            sentence = re.sub(r'\[\d+\]', '', sentence) # strip references
-            if sentence and len(sentence.split()) > 2: # ignore very short sentences
+            sentence = re.sub(r'\[\d+\]', '', sentence)  # strip references
+            if sentence and len(sentence.split()) > 2:   # ignore very short sentences
                 out_file.write(f"{sentence.strip()}\n")
